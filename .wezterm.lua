@@ -8,7 +8,21 @@ wezterm.on('gui-startup', function()
 end)
 
 return {
-  color_scheme = 'Catppuccin Mocha',
+  color_scheme = 'OneHalfDark',
+  colors = {
+    cursor_fg = '#0f0800',
+    cursor_bg = '#fff8f0',
+  },
+  --> other nice themes
+  -- color_scheme = 'Argonaut',
+  -- color_scheme = 'Afterglow',
+  -- color_scheme = 'Catppuccin Mocha',
+
+  -- BEWARE LIGHT MODE
+  -- color_scheme = 'Catppuccin Latte',
+
+  -- this looks cool but doesn't play nicely with indent-blankline
+  -- force_reverse_video_cursor = true,
   window_background_opacity = 0.8,
   window_padding = {
     left = 0,
@@ -19,7 +33,7 @@ return {
   font = wezterm.font 'Iosevka Custom Extended',
   -- underscores can look weird depending on the font; see this issue:
   -- https://github.com/be5invis/Iosevka/issues/1361
-  font_size = 15,
+  font_size = 16,
   default_cursor_style = 'BlinkingBar',
   animation_fps = 1,
   keys = {
