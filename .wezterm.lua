@@ -2,13 +2,26 @@ local wezterm = require('wezterm')
 local act = wezterm.action
 local mux = wezterm.mux
 
+local COLOR_SCHEME = 'OneHalfDark'
+
 wezterm.on('gui-startup', function()
   local _, _, window = mux.spawn_window {}
   window:gui_window():maximize()
 end)
 
+wezterm.on('format-tab-title',
+  function(tab, _, _, _, _, _)
+    -- local title = tab.tab_index .. ': ' .. wezterm.hostname()
+    -- local title = panes[1].user_vars.USER
+    local title = tab.tab_index + 1 ..
+        ': ' .. os.getenv('USER') .. '@' .. wezterm.hostname()
+    return {
+      { Text = title },
+    }
+  end
+)
 return {
-  color_scheme = 'OneHalfDark',
+  color_scheme = COLOR_SCHEME,
   colors = {
     cursor_fg = '#0f0800',
     cursor_bg = '#fff8f0',
@@ -24,6 +37,30 @@ return {
   -- this looks cool but doesn't play nicely with indent-blankline
   -- force_reverse_video_cursor = true,
   window_background_opacity = 0.8,
+  tab_bar_at_bottom = true,
+  -- use_fancy_tab_bar = false,
+  background = {
+    {
+      source = {
+        Color = wezterm.color.get_builtin_schemes()[COLOR_SCHEME].background,
+      },
+      opacity = 0.75,
+      width = '100%',
+      height = '100%',
+    },
+    {
+      source = {
+        File = 'Pictures/logo192.png',
+      },
+      vertical_align = 'Top',
+      horizontal_align = 'Right',
+      width = 160,
+      height = 160,
+      repeat_x = 'NoRepeat',
+      repeat_y = 'NoRepeat',
+      opacity = 0.25,
+    },
+  },
   window_padding = {
     left = 0,
     right = 0,
@@ -33,7 +70,7 @@ return {
   font = wezterm.font 'Iosevka Custom Extended',
   -- underscores can look weird depending on the font; see this issue:
   -- https://github.com/be5invis/Iosevka/issues/1361
-  font_size = 16,
+  font_size = 13,
   default_cursor_style = 'BlinkingBar',
   animation_fps = 1,
   keys = {
