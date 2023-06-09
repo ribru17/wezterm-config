@@ -18,9 +18,8 @@ local grey_bg = '#181a1f'
 
 wezterm.on('format-tab-title',
   function(tab, _, _, _, _, max_width)
-    local title = tab.tab_index + 1 ..
-        ': ' ..
-        os.getenv('USER') .. '@' .. wezterm.hostname()
+    local title = tab.tab_index + 1 .. ': '
+        .. os.getenv('USER') .. '@' .. wezterm.hostname()
     title = wezterm.truncate_right(title, max_width - 2)
 
     if tab.is_active then
@@ -52,6 +51,13 @@ wezterm.on('format-tab-title',
 
 return {
   -- font options
+  -- NOTE: if nerd font symbols are smaller on wezterm, install a SYMBOLS ONLY
+  -- nerd font https://www.nerdfonts.com/font-downloads so essentially the font
+  -- loading becomes the following:
+  -- font = wezterm.font_with_fallback {
+  --   'Iosevka Custom Extended',
+  --   'Symbols Nerd Font Mono',
+  -- },
   font = wezterm.font 'Iosevka Custom Extended',
   -- underscores can look weird depending on the font; see this issue:
   -- https://github.com/be5invis/Iosevka/issues/1361
