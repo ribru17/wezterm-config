@@ -131,8 +131,6 @@ return {
   --   'Iosevka Custom Extended',
   --   'Symbols Nerd Font Mono',
   -- },
-  -- prevent wezterm drawing ugly block glyphs
-  custom_block_glyphs = false,
   font = wezterm.font 'Iosevka Custom Extended',
   -- underscores can look weird depending on the font; see this issue:
   -- https://github.com/be5invis/Iosevka/issues/1361
