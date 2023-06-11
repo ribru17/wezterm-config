@@ -2,7 +2,82 @@ local wezterm = require('wezterm')
 local act = wezterm.action
 local mux = wezterm.mux
 
-local COLOR_SCHEME = 'OneHalfDark'
+local SCHEME_OBJ = {
+  cursor_bg = '#fff8f0',
+  cursor_border = '#fff8f0',
+  cursor_fg = '#0f0800',
+  background = '#252623',
+  foreground = '#f1e9d2',
+  selection_bg = '#2f312c',
+  selection_fg = '#f1e9d2',
+  scrollbar_thumb = '#1c1e1b',
+  visual_bell = '#383b35',
+  split = '#3a3d37',
+  ansi = {
+    '#1c1e1b',
+    '#e75a7c',
+    '#8fb573',
+    '#dbb671',
+    '#57a5e5',
+    '#aaaaff',
+    '#71ada2',
+    '#fff8f0',
+  },
+  brights = {
+    '#1c1e1b',
+    '#e75a7c',
+    '#8fb573',
+    '#dbb671',
+    '#57a5e5',
+    '#aaaaff',
+    '#71ada2',
+    '#fff8f0',
+  },
+  tab_bar = {
+    background = '#1c1e1b',
+    inactive_tab_edge = '#3a3d37',
+    active_tab = {
+      bg_color = '#111210',
+      fg_color = '#f1e9d2',
+      intensity = 'Normal',
+      italic = false,
+      strikethrough = false,
+      underline = 'None',
+    },
+    inactive_tab = {
+      bg_color = '#3a3d37',
+      fg_color = '#5b5e5a',
+      intensity = 'Normal',
+      italic = false,
+      strikethrough = false,
+      underline = 'None',
+    },
+    inactive_tab_hover = {
+      bg_color = '#2f312c',
+      fg_color = '#838781',
+      intensity = 'Normal',
+      italic = true,
+      strikethrough = false,
+      underline = 'None',
+    },
+    new_tab = {
+      bg_color = '#5b5e5a',
+      fg_color = '#f1e9d2',
+      intensity = 'Normal',
+      italic = false,
+      strikethrough = false,
+      underline = 'None',
+    },
+    new_tab_hover = {
+      bg_color = '#838781',
+      fg_color = '#f1e9d2',
+      intensity = 'Normal',
+      italic = false,
+      strikethrough = false,
+      underline = 'None',
+    },
+  },
+}
 
 wezterm.on('gui-startup', function()
   local _, _, window = mux.spawn_window {}
@@ -11,13 +86,13 @@ end)
 
 local SOLID_LEFT_CIRC = wezterm.nerdfonts.ple_left_half_circle_thick
 local SOLID_RIGHT_CIRC = wezterm.nerdfonts.ple_right_half_circle_thick
-local bg = wezterm.color.get_builtin_schemes()[COLOR_SCHEME].background
-local fg = wezterm.color.get_builtin_schemes()[COLOR_SCHEME].foreground
-local s_bg = wezterm.color.get_builtin_schemes()[COLOR_SCHEME].selection_bg
-local grey_bg = '#181a1f'
+local tab_bg = SCHEME_OBJ.tab_bar.background
+local bg = SCHEME_OBJ.tab_bar.active_tab.bg_color
+local i_bg = SCHEME_OBJ.tab_bar.inactive_tab.bg_color
+local ih_bg = SCHEME_OBJ.tab_bar.inactive_tab_hover.bg_color
 
 wezterm.on('format-tab-title',
-  function(tab, _, _, _, _, max_width)
+  function(tab, _, _, _, hover, max_width)
     local title = tab.tab_index + 1 .. ': '
         .. os.getenv('USER') .. '@' .. wezterm.hostname()
     title = wezterm.truncate_right(title, max_width - 2)
@@ -25,25 +100,23 @@ wezterm.on('format-tab-title',
     if tab.is_active then
       return wezterm.format {
         { Foreground = { Color = bg } },
-        { Background = { Color = grey_bg } },
+        { Background = { Color = tab_bg } },
         { Text = SOLID_LEFT_CIRC },
-        { Foreground = { Color = fg } },
-        { Background = { Color = bg } },
+        'ResetAttributes',
         { Text = title },
         { Foreground = { Color = bg } },
-        { Background = { Color = grey_bg } },
+        { Background = { Color = tab_bg } },
         { Text = SOLID_RIGHT_CIRC },
       }
     end
     return wezterm.format {
-      { Foreground = { Color = bg } },
-      { Background = { Color = grey_bg } },
+      { Foreground = { Color = hover and ih_bg or i_bg } },
+      { Background = { Color = tab_bg } },
       { Text = SOLID_LEFT_CIRC },
-      { Foreground = { Color = s_bg } },
-      { Background = { Color = bg } },
+      'ResetAttributes',
       { Text = title },
-      { Foreground = { Color = bg } },
-      { Background = { Color = grey_bg } },
+      { Foreground = { Color = hover and ih_bg or i_bg } },
+      { Background = { Color = tab_bg } },
       { Text = SOLID_RIGHT_CIRC },
     }
   end
@@ -58,28 +131,20 @@ return {
   --   'Iosevka Custom Extended',
   --   'Symbols Nerd Font Mono',
   -- },
+  -- prevent wezterm drawing ugly block glyphs
+  custom_block_glyphs = false,
   font = wezterm.font 'Iosevka Custom Extended',
   -- underscores can look weird depending on the font; see this issue:
   -- https://github.com/be5invis/Iosevka/issues/1361
   font_size = 13,
 
   -- color options
-  color_scheme = COLOR_SCHEME,
-  colors = {
-    cursor_fg = '#0f0800',
-    cursor_bg = '#fff8f0',
-    tab_bar = {
-      background = grey_bg,
-    },
-  },
+  colors = SCHEME_OBJ,
   --> other nice themes
   -- color_scheme = 'Argonaut',
   -- color_scheme = 'Afterglow',
-  -- color_scheme = 'Catppuccin Mocha',
-
   -- BEWARE LIGHT MODE
   -- color_scheme = 'Catppuccin Latte',
-
   -- this looks cool but doesn't play nicely with indent-blankline
   -- force_reverse_video_cursor = true,
 
@@ -93,7 +158,7 @@ return {
   background = {
     {
       source = {
-        Color = bg,
+        Color = SCHEME_OBJ.background,
       },
       opacity = 0.75,
       width = '100%',
