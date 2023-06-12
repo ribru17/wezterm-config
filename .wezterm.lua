@@ -20,7 +20,7 @@ local SCHEME_OBJ = {
     '#dbb671',
     '#57a5e5',
     '#aaaaff',
-    '#71ada2',
+    '#70c2be',
     '#fff8f0',
   },
   brights = {
@@ -30,7 +30,7 @@ local SCHEME_OBJ = {
     '#dbb671',
     '#57a5e5',
     '#aaaaff',
-    '#71ada2',
+    '#70c2be',
     '#fff8f0',
   },
   tab_bar = {
