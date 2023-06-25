@@ -8,7 +8,7 @@ local SCHEME_OBJ = {
   cursor_fg = '#0f0800',
   background = '#252623',
   foreground = '#f1e9d2',
-  selection_bg = '#2f312c',
+  selection_bg = '#5b5e5a',
   selection_fg = '#f1e9d2',
   scrollbar_thumb = '#1c1e1b',
   visual_bell = '#383b35',
@@ -24,7 +24,7 @@ local SCHEME_OBJ = {
     '#fff8f0',
   },
   brights = {
-    '#1c1e1b',
+    '#5b5e5a',
     '#e75a7c',
     '#8fb573',
     '#dbb671',
@@ -135,6 +135,7 @@ return {
   -- underscores can look weird depending on the font; see this issue:
   -- https://github.com/be5invis/Iosevka/issues/1361
   font_size = 13,
+  warn_about_missing_glyphs = false,
 
   -- color options
   colors = SCHEME_OBJ,
