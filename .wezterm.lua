@@ -16,36 +16,37 @@ local bg = SCHEME_OBJ.tab_bar.active_tab.bg_color
 local i_bg = SCHEME_OBJ.tab_bar.inactive_tab.bg_color
 local ih_bg = SCHEME_OBJ.tab_bar.inactive_tab_hover.bg_color
 
-wezterm.on('format-tab-title',
-  function(tab, _, _, _, hover, max_width)
-    local title = tab.tab_index + 1 .. ': '
-        .. os.getenv('USER') .. '@' .. wezterm.hostname()
-    title = wezterm.truncate_right(title, max_width - 2)
+wezterm.on('format-tab-title', function(tab, _, _, _, hover, max_width)
+  local title = tab.tab_index + 1
+    .. ': '
+    .. os.getenv('USER')
+    .. '@'
+    .. wezterm.hostname()
+  title = wezterm.truncate_right(title, max_width - 2)
 
-    if tab.is_active then
-      return wezterm.format {
-        { Foreground = { Color = bg } },
-        { Background = { Color = tab_bg } },
-        { Text = SOLID_LEFT_CIRC },
-        'ResetAttributes',
-        { Text = title },
-        { Foreground = { Color = bg } },
-        { Background = { Color = tab_bg } },
-        { Text = SOLID_RIGHT_CIRC },
-      }
-    end
+  if tab.is_active then
     return wezterm.format {
-      { Foreground = { Color = hover and ih_bg or i_bg } },
+      { Foreground = { Color = bg } },
       { Background = { Color = tab_bg } },
       { Text = SOLID_LEFT_CIRC },
       'ResetAttributes',
       { Text = title },
-      { Foreground = { Color = hover and ih_bg or i_bg } },
+      { Foreground = { Color = bg } },
       { Background = { Color = tab_bg } },
       { Text = SOLID_RIGHT_CIRC },
     }
   end
-)
+  return wezterm.format {
+    { Foreground = { Color = hover and ih_bg or i_bg } },
+    { Background = { Color = tab_bg } },
+    { Text = SOLID_LEFT_CIRC },
+    'ResetAttributes',
+    { Text = title },
+    { Foreground = { Color = hover and ih_bg or i_bg } },
+    { Background = { Color = tab_bg } },
+    { Text = SOLID_RIGHT_CIRC },
+  }
+end)
 
 return {
   -- font options
@@ -56,7 +57,7 @@ return {
   --   'Iosevka Custom Extended',
   --   'Symbols Nerd Font Mono',
   -- },
-  font = wezterm.font 'Iosevka Custom Extended',
+  font = wezterm.font('Iosevka Custom Extended'),
   -- underscores can look weird depending on the font; see this issue:
   -- https://github.com/be5invis/Iosevka/issues/1361
   font_size = 13,
@@ -113,10 +114,26 @@ return {
 
   -- bindings
   keys = {
-    { key = 'LeftArrow',  mods = 'SHIFT',      action = act.ActivateTabRelative(-1) },
-    { key = 'RightArrow', mods = 'SHIFT',      action = act.ActivateTabRelative(1) },
-    { key = 'LeftArrow',  mods = 'CTRL|SHIFT', action = act.MoveTabRelative(-1) },
-    { key = 'RightArrow', mods = 'CTRL|SHIFT', action = act.MoveTabRelative(1) },
+    {
+      key = 'LeftArrow',
+      mods = 'SHIFT',
+      action = act.ActivateTabRelative(-1),
+    },
+    {
+      key = 'RightArrow',
+      mods = 'SHIFT',
+      action = act.ActivateTabRelative(1),
+    },
+    {
+      key = 'LeftArrow',
+      mods = 'CTRL|SHIFT',
+      action = act.MoveTabRelative(-1),
+    },
+    {
+      key = 'RightArrow',
+      mods = 'CTRL|SHIFT',
+      action = act.MoveTabRelative(1),
+    },
   },
   mouse_bindings = {
     -- Change the default click behavior so that it only selects
