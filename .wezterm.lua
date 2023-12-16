@@ -60,7 +60,7 @@ return {
   font = wezterm.font('Iosevka Custom Extended'),
   -- underscores can look weird depending on the font; see this issue:
   -- https://github.com/be5invis/Iosevka/issues/1361
-  font_size = 13,
+  font_size = 15,
   warn_about_missing_glyphs = false,
 
   -- color options
@@ -71,7 +71,7 @@ return {
   -- BEWARE LIGHT MODE
   -- color_scheme = 'Catppuccin Latte',
   -- this looks cool but doesn't play nicely with indent-blankline
-  -- force_reverse_video_cursor = true,
+  force_reverse_video_cursor = false,
 
   -- tab options
   tab_bar_at_bottom = true,
