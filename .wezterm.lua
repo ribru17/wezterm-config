@@ -57,11 +57,16 @@ return {
   --   'Iosevka Custom Extended',
   --   'Symbols Nerd Font Mono',
   -- },
-  font = wezterm.font('Iosevka Custom Extended'),
+  font = wezterm.font {
+    family = 'Iosevka Custom',
+    stretch = 'Expanded',
+    weight = 'Regular',
+  },
   -- underscores can look weird depending on the font; see this issue:
   -- https://github.com/be5invis/Iosevka/issues/1361
   font_size = 15,
   warn_about_missing_glyphs = false,
+  custom_block_glyphs = true,
 
   -- color options
   colors = SCHEME_OBJ,
